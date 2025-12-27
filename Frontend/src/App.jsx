@@ -21,8 +21,13 @@ function App() {
   }, [])
 
   async function reviewCode() {
-    const response = await axios.post('http://localhost:3000/ai/get-review', { code })
-    setReview(response.data)
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/ai/get-review`, { code });
+      setReview(response.data);
+    } catch (error) {
+      console.error('Error fetching review:', error);
+      setReview('Error: Could not connect to the code review service. Please try again later.');
+    }
   }
 
   return (
